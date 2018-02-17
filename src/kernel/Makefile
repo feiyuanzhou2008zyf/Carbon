@@ -1,11 +1,17 @@
+CC=gcc
+ASM=nasm
+LD=ld
+CFLAGS=-Wall -O -m32 -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-builtin -fno-stack-protector -nostdinc -Iinclude/ -c -o
+ASMFLAGS=-f elf32 -o
+LDFLAGS=-T link.ld -o ../build/kernel.elf
+DEBUG_CFLAGS=-g -Wall -O -m32 -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-builtin -fno-stack-protector -nostdinc -Iinclude/ -c -o
+DEBUG_ASMFLAGS=-gstabs -f elf32 -o
 all:
-	nasm -f elf32 gdt/gdt.asm -o ../build/gdt_asm.o
-	gcc -m32 -c kernel.c -o ../build/kernel.o -fno-builtin -fno-stack-protector -Iinclude/
-	gcc -m32 -c gdt/gdt.c -o ../build/gdt.o -fno-builtin -fno-stack-protector -Iinclude/
-	ld -m elf_i386 -T link.ld -o ../build/kernel.elf ../build/*.o
+	$(CC) $(CFLAGS) ../build/main.o main.c
+	$(CC) $(CFLAGS) ../build/gdt.o gdt/gdt.c
+	$(LD) $(LDFLAGS) ../build/*.o
 .PHONY: debug
 debug:
-	nasm -gstabs -f elf32 gdt/gdt.asm -o ../build/gdt_asm.o
-	gcc -g -m32 -c kernel.c -o ../build/kernel.o -fno-builtin -fno-stack-protector -Iinclude/
-	gcc -g -m32 -c gdt/gdt.c -o ../build/gdt.o -fno-builtin -fno-stack-protector -Iinclude/
-	ld -m elf_i386 -T link.ld -o ../build/kernel-debug.elf ../build/*.o
+	$(CC) $(DEBUG_CFLAGS) ../build/main.o main.c
+	$(CC) $(DEBUG_CFLAGS) ../build/gdt.o gdt.c
+	$(LD) $(LDFLAGS) ../build/*.o

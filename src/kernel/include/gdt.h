@@ -1,21 +1,20 @@
 #ifndef GDT_H
 #define GDT_H
-#include "type.h"
 struct gdt_entry {
-    ushort limit_low;
-    ushort base_low;
-    uchar base_middle;
-    uchar access;
-    uchar gran;
-    uchar base_high;
+    unsigned short limit_low;
+    unsigned short base_low;
+    unsigned char base_middle;
+    unsigned char access;
+    unsigned char gran;
+    unsigned char base_high;
 }__attribute__((packed));
 struct gdt_ptr {
-    ushort limit;
-    uint base;
+    unsigned short limit;
+    unsigned int base;
 }__attribute__((packed));
 struct gdt_entry gdt[3];
 struct gdt_ptr gptr;
 extern void gdt_flush();
 void init_gdt();
-void set_gdt_gate(int num,ulong base,ulong limit,uchar access,uchar gran);
+void set_gdt_gate(int num,unsigned long base,unsigned long limit,unsigned char access,unsigned char gran);
 #endif // GDT_H

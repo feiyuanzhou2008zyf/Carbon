@@ -1,6 +1,5 @@
 #include "gdt.h"
-#include "type.h"
-void set_gdt_gate(int num,ulong base,ulong limit,uchar access,uchar gran) {
+void set_gdt_gate(int num,unsigned long base,unsigned long limit,unsigned char access,unsigned char gran) {
     gdt[num].base_low = (base & 0xFFFF);
     gdt[num].base_middle = (base >> 16) & 0xFF;
     gdt[num].base_high = (base >> 24) & 0xFF;

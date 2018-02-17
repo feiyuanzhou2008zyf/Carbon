@@ -1,5 +1,8 @@
+ASM=nasm
+ASMFLAGS=-f elf32
+DEBUG_ASMFLAGS=-gstabs -f elf32
 all:
-	nasm -f elf32 bootstrap.asm -o ../build/bootstrap.o
+	$(ASM) $(ASMFLAGS) boot.asm -o ../build/boot.o
 .PHONY: debug
 debug:
-	nasm -gstabs -f elf32 bootstrap.asm -o ../build/bootstrap.o
+	$(ASM) $(DEBUG_ASMFLAGS) boot.asm -o ../build/boot.o
