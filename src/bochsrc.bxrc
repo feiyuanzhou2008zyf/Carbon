@@ -1,0 +1,6 @@
+megs: 32
+romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
+vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
+floppya: 1_44=build/Carbon.img,status=inserted
+boot: a
+mouse: enabled=0
