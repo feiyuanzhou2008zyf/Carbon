@@ -2,8 +2,8 @@ ASM=nasm
 ASMFLAGS=-f elf -o
 ASM_DEBUG=-gstabs -f elf -o
 CC=gcc
-CFLAGS=-m32 -fno-builtin -fno-stack-protector -nostdlib -c -o
-C_DEBUG=-g -m32 -fno-builtin -fno-stack-protector -nostdlib -c -o
+CFLAGS=-m32 -fno-builtin -fno-stack-protector -nostdlib -Iinclude/ -c -o
+C_DEBUG=-g -m32 -fno-builtin -fno-stack-protector -nostdlib -Iinclude/ -c -o
 LD=ld
 LDFLAGS=-m elf_i386 -T scripts/link.ld -o
 OUT=build
@@ -15,6 +15,7 @@ all:
 	make -C kernel
 	$(LD) $(LDFLAGS) $(OUT)/kernel $(OUT)/*.o
 	make update
+	rm -rf $(OUT)/*.o
 .PHONY: update
 update:
 	@echo "Creating mount point"
@@ -29,15 +30,22 @@ update:
 	sudo rm -rf /mnt/Carbon
 .PHONY: debug
 debug:
+	@echo "Build debug kernel..."
+	test -d $(OUT) || mkdir $(OUT)
 	make -C boot debug
 	make -C kernel debug
 	$(LD) $(LDFLAGS) $(OUT)/kernel $(OUT)/*.o
 	make update
-	bochsgdb -f bochsrc-debug.bxrc
+	rm -rf $(OUT)/*.o
+	qemu-system-i386 -s -S -fda $(OUT)/Carbon.img -boot a -monitor stdio
 .PHONY: run
 run:
-	bochsdbg -f bochsrc.bxrc
+	qemu-system-i386 -fda $(OUT)/Carbon.img -boot a -monitor stdio
+.PHONY: decompile
+decompile:
+	objdump -S $(OUT)/kernel > ./kernel_decompile.asm
+	objdump -t $(OUT)/kernel > ./kernel_func_table.txt
 .PHONY: clean
 clean:
 	@echo "Cleaning build directory..."
-	rm -rf $(OUT)/*
+	rm -rf $(OUT)
