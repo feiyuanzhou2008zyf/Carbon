@@ -10,7 +10,7 @@ void set_gdt_gate(int num,unsigned long base,unsigned long limit,unsigned char a
 }
 void gdt_install() {
 	gdt_ptr.limit = (sizeof(gdt_entry_t) * 3) - 1;
-	gdt_ptr.base = &gdt;
+	gdt_ptr.base = (unsigned int)&gdt;
 	set_gdt_gate(0,0,0,0,0);
 	set_gdt_gate(1,0,0xFFFFFFFF,0x9A,0xCF);
 	set_gdt_gate(2,0,0xFFFFFFFF,0x92,0xCF);
