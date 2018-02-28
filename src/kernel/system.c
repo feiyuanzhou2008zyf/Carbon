@@ -4,6 +4,7 @@
 #include "global.h"
 #include "isr.h"
 #include "irq.h"
+#include "timer.h"
 void init() {
 	gdt_install();
 	printf("GDT installed\n");
@@ -13,6 +14,8 @@ void init() {
 	printf("ISR installed\n");
 	irq_install();
 	printf("IRQ installed\n");
+	timer_install();
+	printf("Timer PIT installed\n");
 }
 void kernel_main() {
 	char *hello = "Hello World,Here kernel!";
