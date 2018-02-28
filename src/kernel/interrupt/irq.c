@@ -22,6 +22,7 @@ void *irq_routines[16] = {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0
 };
+void irq_install_handler(int irq, void (*handler)(Registers *r)) { irq_routines[irq] = handler; }
 void irq_uninstall_handler(int irq) { irq_routines[irq] = 0; }
 void irq_remap(void) {
     outb(0x20, 0x11);

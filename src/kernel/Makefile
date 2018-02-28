@@ -10,6 +10,7 @@ all:
 	$(CC) $(CFLAGS) $(OUT)/isr.o interrupt/isr.c
 	$(CC) $(CFLAGS) $(OUT)/lib.o lib.c
 	$(CC) $(CFLAGS) $(OUT)/bio.o bio.c
+	$(CC) $(CFLAGS) $(OUT)/timer.o timer/timer.c
 	$(CC) $(CFLAGS) $(OUT)/system.o system.c
 .PHONY: debug
 debug:
@@ -23,4 +24,5 @@ debug:
 	$(CC) $(C_DEBUG) $(OUT)/isr_debug.o interrupt/isr.c
 	$(CC) $(C_DEBUG) $(OUT)/lib_debug.o lib.c
 	$(CC) $(C_DEBUG) $(OUT)/bio_debug.o bio.c
+	$(CC) $(C_DEBUG) $(OUT)/timer_debug.o timer/timer.c
 	$(CC) $(C_DEBUG) $(OUT)/system_debug.o system.c
