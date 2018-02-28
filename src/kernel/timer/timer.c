@@ -1,4 +1,7 @@
 #include "timer.h"
+#include "irq.h"
+#include "isr.h"
+#include "io.h"
 int timer_ticks = 0;
 void timer_handler(Registers *r) {
 	timer_ticks++;

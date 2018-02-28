@@ -1,5 +1,7 @@
 #ifndef ISR_H
 #define ISR_H
+#include "io.h"
+#include "interrupt.h"
 struct registers {
 	unsigned int gs, fs, es, ds;
     unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;

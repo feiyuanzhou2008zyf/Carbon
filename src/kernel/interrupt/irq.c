@@ -2,6 +2,7 @@
 #include "isr.h"
 #include "interrupt.h"
 #include "bio.h"
+#include "io.h"
 extern void irq0();
 extern void irq1();
 extern void irq2();

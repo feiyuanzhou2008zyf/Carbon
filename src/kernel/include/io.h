@@ -1,11 +1,12 @@
 #ifndef CARBONIO_H
 #define CARBONIO_H
+#include "system.h"
 static int x,y;
 static volatile unsigned char *video;
 static void clear(void);
 static void itoa(char *buffer,int base,int digit);
 static void putchar(char c);
-void printf(const char *format,...);
+static void printf(const char *format,...);
 static void clear(void) {
 	for (int i = 0;i < COLUMNS * LINES * 2;i++)
 		*(video + i) = 0xFF;
@@ -54,7 +55,7 @@ static void putchar(char c) {
 	if (x >= COLUMNS)
 		goto newline;
 }
-void printf(const char *format,...) {
+static void printf(const char *format,...) {
 	char **args = (char **)&format;
 	int c;
 	char buffer[20];

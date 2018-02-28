@@ -1,4 +1,6 @@
 #include "isr.h"
+#include "bio.h"
+#include "io.h"
 extern void isr0();
 extern void isr1();
 extern void isr2();
