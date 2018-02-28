@@ -4,6 +4,7 @@ all:
 	$(ASM) $(ASMFLAGS) $(OUT)/interrupt_asm.o interrupt/interrupt.asm
 	$(ASM) $(ASMFLAGS) $(OUT)/isr_asm.o interrupt/isr.asm
 	$(ASM) $(ASMFLAGS) $(OUT)/irq_asm.o interrupt/irq.asm
+	$(CC) $(CFLAGS) $(OUT)/keyboard.o keyboard.c
 	$(CC) $(CFLAGS) $(OUT)/timer.o timer/timer.c
 	$(CC) $(CFLAGS) $(OUT)/global.o global/global.c
 	$(CC) $(CFLAGS) $(OUT)/interrupt.o interrupt/interrupt.c
@@ -18,6 +19,7 @@ debug:
 	$(ASM) $(ASM_DEBUG) $(OUT)/interrupt_asm_debug.o interrupt/interrupt.asm
 	$(ASM) $(ASM_DEBUG) $(OUT)/isr_asm_debug.o interrupt/isr.asm
 	$(ASM) $(ASM_DEBUG) $(OUT)/irq_asm_debug.o interrupt/irq.asm
+	$(CC) $(C_DEBUG) $(OUT)/keyboard_debug.o keyboard.c
 	$(CC) $(C_DEBUG) $(OUT)/timer_debug.o timer/timer.c
 	$(CC) $(C_DEBUG) $(OUT)/global_debug.o global/global.c
 	$(CC) $(C_DEBUG) $(OUT)/interrupt_debug.o interrupt/interrupt.c
