@@ -1,9 +1,18 @@
 #include "system.h"
 #include "io.h"
+#include "interrupt.h"
 #include "global.h"
+#include "isr.h"
+#include "irq.h"
 void init() {
 	gdt_install();
+	printf("GDT installed\n");
 	idt_install();
+	printf("IDT installed\n");
+	isrs_install();
+	printf("ISR installed\n");
+	irq_install();
+	printf("IRQ installed\n");
 }
 void kernel_main() {
 	char *hello = "Hello World,Here kernel!";

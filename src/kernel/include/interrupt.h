@@ -15,7 +15,7 @@ struct idt_ptr_struct {
 typedef struct idt_ptr_struct idt_ptr_t;
 idt_entry_t idt[256];
 idt_ptr_t idt_ptr;
-extern set_idt_gate(unsigned char num,unsigned long base,unsigned short selector,unsigned char flags);
+extern void set_idt_gate(unsigned char num,unsigned long base,unsigned short selector,unsigned char flags);
 extern void idt_load();
 extern void idt_install();
 #endif // INTERRUPT_H

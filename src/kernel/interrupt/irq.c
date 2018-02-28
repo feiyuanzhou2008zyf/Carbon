@@ -1,5 +1,6 @@
 #include "irq.h"
-#include "idt.h"
+#include "isr.h"
+#include "interrupt.h"
 #include "bio.h"
 extern void irq0();
 extern void irq1();
