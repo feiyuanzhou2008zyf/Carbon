@@ -6,19 +6,14 @@
 #include "irq.h"
 #include "timer.h"
 #include "keyboard.h"
-void init() {
+void kernel_main() {
 	gdt_install();
 	idt_install();
 	isrs_install();
 	irq_install();
 	timer_install();
 	keyboard_install();
-}
-void kernel_main() {
-	init();
-	char *hello = "Hello World,Here kernel!";
 	video = (unsigned char *)VIDEO;
 	clear();
-	printf("%s\n",hello);
 	return;
 }
