@@ -48,7 +48,7 @@ void console_putchar_color(char c,real_color_t back,real_color_t front) {
 		video_memory[cursor_y * 80 + cursor_x] = c | attribute;
 		cursor_x++;
 	}
-	if (cursor >= 80) {
+	if (cursor_x >= 80) {
 		cursor_x = 0;
 		cursor_y++;
 	}
@@ -57,7 +57,7 @@ void console_putchar_color(char c,real_color_t back,real_color_t front) {
 }
 void console_write(char *str) {
 	while (*str)
-		console_putchar_color(*str++,black,write);
+		console_putchar_color(*str++,black,white);
 }
 void console_write_color(char *str,real_color_t back,real_color_t front) {
 	while (*str)

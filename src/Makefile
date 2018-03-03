@@ -1,8 +1,8 @@
 #!Makefile
 C_SOURCE=$(shell find . -name "*.c")
 C_OBJECT=$(patsubst %.c,%.o,$(C_SOURCE))
-S_SOURCE=$(shell find . -name "*.asm")
-S_OBJECT=$(patsubst %.asm,%.o,$(S_SOURCE))
+S_SOURCE=$(shell find . -name "*.s")
+S_OBJECT=$(patsubst %.s,%.o,$(S_SOURCE))
 CC=gcc
 LD=ld
 ASM=nasm
@@ -24,6 +24,7 @@ clean:
 	$(RM) $(S_OBJECT) $(C_OBJECT) kernel.elf
 .PHONY: update
 update:
+	test -d /mnt/Carbon || sudo mkdir -p /mnt/Carbon
 	sudo mount grub.img /mnt/Carbon
 	sudo cp kernel.elf /mnt/Carbon
 	sudo umount /mnt/Carbon
@@ -34,6 +35,9 @@ mount_image:
 .PHONY: umount_image
 umount_image:
 	sudo umount /mnt/Carbon
+.PHONY: delete_mountpoint
+delete_mountpoint:
+	sudo rm -rf /mnt/Carbon
 .PHONY: qemu
 qemu:
 	qemu -fda Carbon.img -boot a
