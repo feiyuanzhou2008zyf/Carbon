@@ -21,7 +21,7 @@ void printk_color(real_color_t back,real_color_t front,const char *format,...) {
 	i = vsprintf(buffer,format,args);
 	va_end(args);
 	buffer[i] = '\0';
-	console_write_color(buffer,back,fore);
+	console_write_color(buffer,back,front);
 }
 #define is_digit(c)	((c) >= '0' && (c) <= '9')
 static int skip_atoi(const char **s) {
