@@ -6,6 +6,6 @@ floppya: 1_44=Carbon.img, status=inserted
 boot: a
 boot: floppy
 mouse: enabled=0
-keyboard_mapping: enabled=1, map="/usr/local/share/bochs/keymaps/x11-pc-us.map"
+#keyboard: enabled=1, map="/usr/local/share/bochs/keymaps/x11-pc-us.map"
 clock: sync=realtime
 cpu: ips=1000000

@@ -25,10 +25,10 @@ clean:
 .PHONY: update
 update:
 	test -d /mnt/Carbon || sudo mkdir -p /mnt/Carbon
-	sudo mount grub.img /mnt/Carbon
+	cp grub.img Carbon.img
+	sudo mount Carbon.img /mnt/Carbon
 	sudo cp kernel.elf /mnt/Carbon
 	sudo umount /mnt/Carbon
-	mv grub.img Carbon.img
 .PHONY: mount_image
 mount_image:
 	sudo mount Carbon.img /mnt/Carbon
@@ -40,7 +40,7 @@ delete_mountpoint:
 	sudo rm -rf /mnt/Carbon
 .PHONY: qemu
 qemu:
-	qemu -fda Carbon.img -boot a
+	qemu-system-i386 -fda Carbon.img -boot a
 .PHONY: bochs
 bochs:
 	bochsgdb -f tool/bochsrc.txt
