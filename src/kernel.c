@@ -1,4 +1,5 @@
 #include "console.h"
+#include "stdio.h"
 #include "debug.h"
 int kernel_main() {
 	init_debug();
