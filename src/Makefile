@@ -2,7 +2,7 @@
 C_SOURCE=$(shell find . -name "*.c")
 C_OBJECT=$(patsubst %.c,%.o,$(C_SOURCE))
 S_SOURCE=$(shell find . -name "*.asm")
-S_OBJECT=$(patsubst %.s,%.o,$(S_SOURCE))
+S_OBJECT=$(patsubst %.asm,%.o,$(S_SOURCE))
 CC=gcc
 LD=ld
 ASM=nasm
