@@ -1,6 +1,9 @@
 #include "console.h"
+#include "debug.h"
 int kernel_main() {
+	init_debug();
 	console_clear();
-	console_write("Hello World,Here Kernel");
+	printk_color(black,white,"Hello World,Here Kernel\n");
+	panic("test");
 	return 0;
 }

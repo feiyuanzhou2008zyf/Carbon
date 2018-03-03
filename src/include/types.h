@@ -1,7 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 #ifndef NULL
-	#define NULL 0
+	#define NULL (void *)0
 #endif // NULL
 #ifndef TRUE
 	#define TRUE 1
