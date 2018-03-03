@@ -1,51 +1,46 @@
-ASM=nasm
-ASMFLAGS=-f elf -o
-ASM_DEBUG=-gstabs -f elf -o
+#!Makefile
+C_SOURCE=$(shell find . -name "*.c")
+C_OBJECT=$(patsubst %.c,%.o,$(C_SOURCE))
+S_SOURCE=$(shell find . -name "*.asm")
+S_OBJECT=$(patsubst %.s,%.o,$(S_SOURCE))
 CC=gcc
-CFLAGS=-m32 -fno-builtin -fno-stack-protector -nostdlib -Iinclude/ -c -o
-C_DEBUG=-g -m32 -fno-builtin -fno-stack-protector -nostdlib -Iinclude/ -c -o
 LD=ld
-LDFLAGS=-m elf_i386 -T scripts/link.ld -o
-OUT=build
-export ASM ASMFLAGS CC CFLAGS C_DEBUG ASM_DEBUG
-all:
-	@echo "Compiling the kernel source..."
-	test -d $(OUT) || mkdir $(OUT)
-	make -C boot
-	make -C kernel
-	$(LD) $(LDFLAGS) $(OUT)/kernel $(OUT)/*.o
-	make update
-	rm -rf $(OUT)/*.o
-.PHONY: update
-update:
-	@echo "Creating mount point"
-	test -d /mnt/Carbon || sudo mkdir -p /mnt/Carbon
-	@echo "Updating kernel image"
-	cp boot.img $(OUT)
-	sudo mount $(OUT)/boot.img /mnt/Carbon
-	sudo cp $(OUT)/kernel /mnt/Carbon
-	sudo umount /mnt/Carbon
-	mv $(OUT)/boot.img $(OUT)/Carbon.img
-	@echo "Recover environment"
-	sudo rm -rf /mnt/Carbon
-.PHONY: debug
-debug:
-	@echo "Build debug kernel..."
-	test -d $(OUT) || mkdir $(OUT)
-	make -C boot debug
-	make -C kernel debug
-	$(LD) $(LDFLAGS) $(OUT)/kernel $(OUT)/*.o
-	make update
-	rm -rf $(OUT)/*.o
-	qemu-system-i386 -s -S -fda $(OUT)/Carbon.img -boot a -monitor stdio
-.PHONY: run
-run:
-	qemu-system-i386 -fda $(OUT)/Carbon.img -boot a -monitor stdio
-.PHONY: decompile
-decompile:
-	objdump -S $(OUT)/kernel > ./kernel_decompile.asm
-	objdump -t $(OUT)/kernel > ./kernel_func_table.txt
+ASM=nasm
+CFLAGS=-c -Wall -m32 -ggdb -gstabs+ -nostdinc -fno-builtin -fno-stack-protector -Iinclude
+LDFLAGS=-T script/link.ld -m elf_i386 -nostdlib
+ASMFLAGS=-f elf -g -F stabs
+all: $(S_OBJECT) $(C_OBJECT) link update
+.c.o:
+	@echo "Compiling the source..."
+	$(CC) $(CFLAGS) $< -o $@
+.s.o:
+	@echo "Assembling the source..."
+	$(ASM) $(ASMFLAGS) $<
+link:
+	@echo "Linking kernel..."
+	$(LD) $(LDFLAGS) $(S_OBJECT) $(C_OBJECT) -o kernel.elf
 .PHONY: clean
 clean:
-	@echo "Cleaning build directory..."
-	rm -rf $(OUT)
+	$(RM) $(S_OBJECT) $(C_OBJECT) kernel.elf
+.PHONY: update
+update:
+	sudo mount grub.img /mnt/Carbon
+	sudo cp kernel.elf /mnt/Carbon
+	sudo umount /mnt/Carbon
+	mv grub.img Carbon.img
+.PHONY: mount_image
+mount_image:
+	sudo mount Carbon.img /mnt/Carbon
+.PHONY: umount_image
+umount_image:
+	sudo umount /mnt/Carbon
+.PHONY: qemu
+qemu:
+	qemu -fda Carbon.img -boot a
+.PHONY: bochs
+bochs:
+	bochsgdb -f tool/bochsrc.txt
+.PHONY: debug
+debug:
+	qemu -s -S -fda Carbon.img -boot -a
+	gdb -x tool/gdbinit
