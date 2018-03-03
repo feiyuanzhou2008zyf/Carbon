@@ -6,9 +6,8 @@ static int vsprintf(char *buff, const char *format, va_list args);
 void printk(const char *format,...) {
 	static char buffer[1024];
 	va_list args;
-	int i;
 	va_start(args,format);
-	i = vsprintf(buffer,format,args);
+	int i = vsprintf(buffer,format,args);
 	va_end(args);
 	buffer[i] = '\0';
 	console_write(buffer);
@@ -16,14 +15,13 @@ void printk(const char *format,...) {
 void printk_color(real_color_t back,real_color_t front,const char *format,...) {
 	static char buffer[1024];
 	va_list args;
-	int i;
 	va_start(args,format);
-	i = vsprintf(buffer,format,args);
+	int i = vsprintf(buffer,format,args);
 	va_end(args);
 	buffer[i] = '\0';
 	console_write_color(buffer,back,front);
 }
-#define is_digit(c)	((c) >= '0' && (c) <= '9')
+#define is_digit(c) ((c) >= '0' && (c) <= '9')
 static int skip_atoi(const char **s) {
 	int i = 0;
 	while (is_digit(**s)) { i = i * 10 + *((*s)++) - '0'; }
