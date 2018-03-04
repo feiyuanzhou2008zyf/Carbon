@@ -22,7 +22,7 @@ void init_physic_page() {
         if (map_entry -> type == 1 && map_entry -> base_addr_low == 0x100000) {
             uint32_t page_addr = map_entry -> base_addr_low + (uint32_t)(kernel_end - kernel_start);
             uint32_t length = map_entry -> base_addr_low + map_entry -> length_low;
-            while (page_addr < length && page_addr <= STACK_SIZE) {
+            while (page_addr < length && page_addr <= PHYSIC_MEMORY_MAX_SIZE) {
                 physic_free_page(page_addr);
                 page_addr += PHYSIC_MEMORY_PAGE_SIZE;
                 physic_page_count++;
