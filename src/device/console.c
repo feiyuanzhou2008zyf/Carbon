@@ -1,6 +1,7 @@
 #include "console.h"
 #include "common.h"
-static uint16_t *video_memory = (uint16_t *)0xB8000;
+#include "virtual_memory.h"
+static uint16_t *video_memory = (uint16_t *)(0xB8000 + PAGE_OFFSET);
 static uint8_t cursor_x = 0;
 static uint8_t cursor_y = 0;
 static void move_cursor() {

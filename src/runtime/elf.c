@@ -1,19 +1,20 @@
 #include "common.h"
 #include "string.h"
 #include "elf.h"
+#include "virtual_memory.h"
 elf_t elf_from_multiboot(multiboot_t *mb) {
     int i;
     elf_t elf;
     elf_section_header_t *sh = (elf_section_header_t *)mb -> addr;
     uint32_t shstrtab = sh[mb -> shndx].addr;
     for (i = 0; i < mb->num; i++) {
-        const char *name = (const char *)(shstrtab + sh[i].name);
+        const char *name = (const char *)(shstrtab + sh[i].name) + PAGE_OFFSET;
         if (strcmp(name, ".strtab") == 0) {
-            elf.strtab = (const char *)sh[i].addr;
+            elf.strtab = (const char *)sh[i].addr + PAGE_OFFSET;
             elf.strtabsz = sh[i].size;
         }
         if (strcmp(name, ".symtab") == 0) {
-            elf.symtab = (elf_symbol_t *)sh[i].addr;
+            elf.symtab = (elf_symbol_t *)(sh[i].addr + PAGE_OFFSET);
             elf.symtabsz = sh[i].size;
         }
     }
