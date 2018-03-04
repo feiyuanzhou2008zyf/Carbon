@@ -8,6 +8,7 @@ static void split_chunk(header_t *chunk, uint32_t len);
 static void glue_chunk(header_t *chunk);
 static uint32_t heap_max = HEAP_START;
 static header_t *heap_first;
+page_t pgd_kernel[PGD_SIZE] __attribute__((aligned(PAGE_SIZE)));
 void init_heap() { heap_first = 0; }
 void *kmalloc(uint32_t len) {
     len += sizeof(header_t);
