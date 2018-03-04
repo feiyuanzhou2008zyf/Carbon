@@ -46,5 +46,4 @@ bochs:
 	bochsgdb -f tool/bochsrc.txt
 .PHONY: debug
 debug:
-	qemu -s -S -fda Carbon.img -boot -a
-	gdb -x tool/gdbinit
+	qemu-system-i386 -s -S -fda Carbon.img -boot a

@@ -1,6 +1,7 @@
 #include "physic_memory.h"
 #include "common.h"
 #include "stdio.h"
+#include "debug.h"
 #include "multiboot.h"
 static uint32_t physic_memory_stack[PAGE_MAX_SIZE + 1];
 static uint32_t physic_memory_stack_top;
@@ -21,7 +22,7 @@ void init_physic_page() {
         if (map_entry -> type == 1 && map_entry -> base_addr_low == 0x100000) {
             uint32_t page_addr = map_entry -> base_addr_low + (uint32_t)(kernel_end - kernel_start);
             uint32_t length = map_entry -> base_addr_low + map_entry -> length_low;
-            while (page_addr < length && page_addr <= PHYSIC_MEMORY_STACK_SIZE) {
+            while (page_addr < length && page_addr <= STACK_SIZE) {
                 physic_free_page(page_addr);
                 page_addr += PHYSIC_MEMORY_PAGE_SIZE;
                 physic_page_count++;
