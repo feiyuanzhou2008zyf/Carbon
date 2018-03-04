@@ -11,7 +11,7 @@ void init_idt() {
     bzero((uint8_t *)&interrupt_handlers, sizeof(interrupt_handler_t) * 256);
     idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1;
     idt_ptr.base = (uint32_t)&idt_entry;
-    bzero((uint8_t *)&idt_entries, sizeof(idt_entry_t) * 256);
+    bzero((uint8_t *)&idt_entry, sizeof(idt_entry_t) * 256);
     set_idt_gate(0, (uint32_t)isr0, 0x08, 0x8E);
     set_idt_gate(1, (uint32_t)isr1, 0x08, 0x8E);
     set_idt_gate(2, (uint32_t)isr2, 0x08, 0x8E);
@@ -47,7 +47,7 @@ void init_idt() {
     set_idt_gate(255, (uint32_t)isr255, 0x08, 0x8E);
     flush_idt((uint32_t)&idt_ptr);
 }
-static void set_idt_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags) {
+static void set_idt_gate(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags) {
     idt_entry[num].base_low = base & 0xFFFF;
     idt_entry[num].base_high = (base >> 16) & 0xFFFF;
     idt_entry[num].selector = selector;

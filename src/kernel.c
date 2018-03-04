@@ -2,7 +2,7 @@
 #include "stdio.h"
 #include "debug.h"
 #include "gdt.h"
-#include idt.h
+#include "idt.h"
 int kernel_main() {
 	init_debug();
 	init_gdt();

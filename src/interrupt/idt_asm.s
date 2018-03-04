@@ -46,6 +46,7 @@ ISR_NOERRCODE 29
 ISR_NOERRCODE 30
 ISR_NOERRCODE 31
 ISR_NOERRCODE 255
+[extern isr_handler]
 isr_common_stub:
     pusha
     mov ax, ds
@@ -68,6 +69,7 @@ isr_common_stub:
     popa
     add esp, 8
     iret
+[global flush_idt]
 flush_idt:
 	mov eax,[esp + 4]
 	lidt [eax]
