@@ -1,4 +1,5 @@
 #include "debug.h"
+#include "stdio.h"
 static void print_stack_trace();
 static elf_t kernel_elf;
 void init_debug() {

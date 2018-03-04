@@ -21,13 +21,13 @@ link:
 	$(LD) $(LDFLAGS) $(S_OBJECT) $(C_OBJECT) -o kernel.elf
 .PHONY: clean
 clean:
-	$(RM) $(S_OBJECT) $(C_OBJECT) kernel.elf
+	$(RM) $(S_OBJECT) $(C_OBJECT) kernel.elf Carbon.img
 .PHONY: update
 update:
 	test -d /mnt/Carbon || sudo mkdir -p /mnt/Carbon
 	cp grub.img Carbon.img
 	sudo mount Carbon.img /mnt/Carbon
-	sudo cp kernel.elf /mnt/Carbon
+	sudo cp kernel.elf /mnt/Carbon/kernel/
 	sudo umount /mnt/Carbon
 .PHONY: mount_image
 mount_image:

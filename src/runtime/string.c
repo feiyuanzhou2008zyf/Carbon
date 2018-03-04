@@ -10,11 +10,11 @@ inline void memset(void *dest,uint8_t val,uint32_t len) {
 }
 inline void bzero(void *dest,uint32_t len) { memset(dest,0,len); }
 int strcmp(const char *str1, const char *str2) {
-	while ((*str1 || *str2) && *str1 == *str2)
-		*str1++,*str2++;
+	while ((*str1 || *str2) && (*str1 == *str2))
+		str1++,str2++;
 	if (*str1 < *str2)
 		return -1;
-	return *a > *b;
+	return *str1 > *str2;
 }
 char *strcpy(char *dest, const char *src) {
 	char *p = dest;
