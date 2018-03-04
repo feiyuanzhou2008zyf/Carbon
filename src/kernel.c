@@ -1,10 +1,11 @@
 #include "console.h"
 #include "stdio.h"
 #include "debug.h"
+#include "gdt.h"
 int kernel_main() {
 	init_debug();
+	init_gdt();
 	console_clear();
-	printk_color(black,white,"Hello World,Here Kernel\n");
-	panic("test");
+	printk("Hello World,Here Kernel\n");
 	return 0;
 }
