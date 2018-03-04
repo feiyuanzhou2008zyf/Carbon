@@ -1,6 +1,7 @@
 ENTRY(start)
 SECTIONS {
 	. = 0x100000;
+	PROVIDE( kernel_start = . );
 	.text : {
 		*(.text)
 		. = ALIGN(4096);
@@ -22,5 +23,6 @@ SECTIONS {
 		*(.stabstr)
 		. = ALIGN(4096);
 	}
+	PROVIDE( kernel_end = . );
 	/DISCARD/ : { *(comment) *(eh_frame) }
 }
