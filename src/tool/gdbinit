@@ -1,4 +1,6 @@
-file kernel.elf
 target remote localhost:1234
-break *kernel_main
+file kernel.elf
+break kernel_main
+break kmalloc
+break alloc_chunk
 c

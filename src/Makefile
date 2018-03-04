@@ -41,9 +41,12 @@ delete_mountpoint:
 .PHONY: qemu
 qemu:
 	qemu-system-i386 -fda Carbon.img -boot a
-.PHONY: bochs
-bochs:
-	bochsgdb -f tool/bochsrc.txt
+.PHONY: bochsgdb
+bochsgdb:
+	bochsgdb -f tool/bochsrc-gdb.txt
+.PHONY: bochsdbg
+bochsdbg:
+	bochsdbg -f tool/bochsrc.txt
 .PHONY: debug
 debug:
 	qemu-system-i386 -s -S -fda Carbon.img -boot a

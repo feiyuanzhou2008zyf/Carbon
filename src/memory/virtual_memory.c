@@ -1,6 +1,7 @@
 #include "idt.h"
 #include "string.h"
 #include "stdio.h"
+#include "debug.h"
 #include "virtual_memory.h"
 #include "physic_memory.h"
 page_t pgd_kernel[PGD_SIZE] __attribute__((aligned(PAGE_SIZE)));
