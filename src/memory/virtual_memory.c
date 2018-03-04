@@ -3,7 +3,7 @@
 #include "stdio.h"
 #include "virtual_memory.h"
 #include "physic_memory.h"
-pgd_t pgd_kernel[PGD_SIZE] __attribute__((aligned(PAGE_SIZE)));
+page_t pgd_kernel[PGD_SIZE] __attribute__((aligned(PAGE_SIZE)));
 static pte_t pte_kernel[PTE_COUNT][PTE_SIZE] __attribute__((aligned(PAGE_SIZE)));
 void init_virtual_memory() {
     uint32_t kernel_pte_first_idx = PGD_INDEX(PAGE_OFFSET);
@@ -18,7 +18,7 @@ void init_virtual_memory() {
     switch_pgd(pgd_kernel_phy_addr);
 }
 void switch_pgd(uint32_t pd) { asm volatile ("mov %0, %%cr3" : : "r" (pd)); }
-void map(pgd_t *pgd_now, uint32_t va, uint32_t pa, uint32_t flags) {   
+void map(page_t *pgd_now, uint32_t va, uint32_t pa, uint32_t flags) {   
     uint32_t pgd_idx = PGD_INDEX(va);
     uint32_t pte_idx = PTE_INDEX(va); 
     pte_t *pte = (pte_t *)(pgd_now[pgd_idx] & PAGE_MASK);
