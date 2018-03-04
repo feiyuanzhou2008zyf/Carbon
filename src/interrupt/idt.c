@@ -80,6 +80,9 @@ static void set_idt_gate(uint8_t num, uint32_t base, uint16_t selector, uint8_t 
     idt_entry[num].always = 0;
     idt_entry[num].flags = flags;
 }
+void register_interrupt_handler(uint8_t n,interrupt_handler_t h) {
+	interrupt_handlers[n] = h;
+}
 void isr_handler(pt_regs *regs) {
     if (interrupt_handlers[regs -> int_no])
         interrupt_handlers[regs -> int_no](regs);
