@@ -17,7 +17,7 @@ typedef uint32_t pte_t;
 #define PGD_SIZE (PAGE_SIZE / sizeof(pte_t))
 #define PTE_SIZE (PAGE_SIZE / sizeof(uint32_t))
 #define PTE_COUNT 128
-extern page_t pgd_kern[PGD_SIZE];
+extern page_t pgd_kernal[PGD_SIZE];
 void init_virtual_memory();
 void switch_pgd(uint32_t pd);
 void map(page_t *pgd_now, uint32_t va, uint32_t pa, uint32_t flags);
