@@ -1,4 +1,5 @@
 #include "string.h"
+#include "debug.h"
 void *memcpy(void *dest,const void *src,size_t count) {
 	if (dest == NULL || src == NULL || count < 0)  
         return NULL;  
@@ -24,29 +25,29 @@ void bzero(void *src,unsigned len) {
 	}
 }
 char *strcpy(char *dest, const char *src) {
-	char *p = dest;
+	char *addr = dest;
+	assert((dest != NULL) && (src != NULL));
 	while (*src)
-		*p++ = *src++;
-	*p = '\0';
-	return dest;
+		*dest++ = *src++;
+	*dest = '\0';
+	return addr;
 }
 char *strcat(char *dest, const char *src) {
-	char *dest_ptr = NULL;
-	const char *src_ptr = NULL;
-	int dest_len = 0;
-	if (dest == NULL || src == NULL)
-		return NULL;
-	dest_len = strlen(dest);
-	dest_ptr = dest;
-	src_ptr = src;
-	dest_ptr += dest_len;
-	while (*src_ptr != '\0') {
-		*dest_ptr = *src_ptr;
-		dest_ptr++;
-		src_ptr++;
-	}
-	*dest_ptr = '\0';
+	assert(dest != NULL && src != NULL);
+	char *ptr = dest;
+	while (*ptr++)
+		--ptr;
+	while ((*ptr++ = *src++) != 0);
 	return dest;
+}
+int strcmp(const char *str1, const char *str2) {
+	int len = 0;
+	assert((str1 != NULL) && (str2 != NULL));
+	while (*str1 && *str2 && (*str1 == *str2)) {
+		str1++;
+		str2++;
+	}
+	return *str1 - *str2;
 }
 int strlen(const char *src) {
 	if (src == NULL)
