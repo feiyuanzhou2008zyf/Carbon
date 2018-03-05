@@ -53,7 +53,6 @@ void kernel_main() {
     printk("Alloc Physical Addr: 0x%08X\n", alloc_addr);
     alloc_addr = physic_alloc_page();
     printk("Alloc Physical Addr: 0x%08X\n", alloc_addr);
-	print_cur_status();
 	while (1) {
 		asm volatile ("hlt");
 	}

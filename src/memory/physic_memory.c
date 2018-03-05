@@ -31,11 +31,11 @@ void init_physic_page() {
     }
 }
 uint32_t physic_alloc_page() {
-    assert(physic_memory_stack_top != 0, "Out of memory");
+    assert(physic_memory_stack_top != 0);
     uint32_t page = physic_memory_stack[physic_memory_stack_top--];
     return page;
 }
 void physic_free_page(uint32_t p) {
-    assert(physic_memory_stack_top != PAGE_MAX_SIZE, "Out of pmm_stack stack");
+    assert(physic_memory_stack_top != PAGE_MAX_SIZE);
     physic_memory_stack[++physic_memory_stack_top] = p;
 }

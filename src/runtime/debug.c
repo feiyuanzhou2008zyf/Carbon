@@ -34,3 +34,7 @@ void print_stack_trace() {
         ebp = (uint32_t*)*ebp;
     }
 }
+void _assert(void *exp,void *file,uint32_t line) {
+    printk("Assertion failed: %s,File: %s,Line: %d",exp,file,line);
+    asm volatile ("hlt");
+}
