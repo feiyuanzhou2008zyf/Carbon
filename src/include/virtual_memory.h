@@ -20,7 +20,7 @@ typedef uint32_t pte_t;
 extern page_t pgd_kern[PGD_SIZE];
 void init_virtual_memory();
 void switch_pgd(uint32_t pd);
-void map(pgd_t *pgd_now, uint32_t va, uint32_t pa, uint32_t flags);
+void map(page_t *pgd_now, uint32_t va, uint32_t pa, uint32_t flags);
 void unmap(page_t *pgd_now, uint32_t va);
 uint32_t get_mapping(page_t *pgd_now, uint32_t va, uint32_t *pa);
 void page_fault(pt_regs *regs);
