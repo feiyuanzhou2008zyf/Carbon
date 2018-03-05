@@ -7,7 +7,6 @@
 #include "timer.h"
 #include "physic_memory.h"
 #include "virtual_memory.h"
-#include "heap.h"
 void kernel_main();
 multiboot_t *global_multiboot_ptr;
 char kernel_stack[STACK_SIZE];
@@ -55,7 +54,6 @@ void kernel_main() {
     alloc_addr = physic_alloc_page();
     printk("Alloc Physical Addr: 0x%08X\n", alloc_addr);
 	print_cur_status();
-	test_heap();
 	while (1) {
 		asm volatile ("hlt");
 	}

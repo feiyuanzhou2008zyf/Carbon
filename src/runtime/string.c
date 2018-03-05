@@ -1,20 +1,27 @@
 #include "string.h"
-inline void memcpy(uint8_t *dest,const uint8_t *src,uint32_t len) {
-    for (;len != 0;len--)
-        *dest++ = *src++;
+void *memcpy(void *dest,const void *src,size_t count) {
+	if (dest == NULL || src == NULL || count < 0)  
+        return NULL;  
+    char *tempDest = (char *)dest;  
+    char *tempSrc = (char *)src;  
+    while (count-- > 0)  
+        *tempDest++ = *tempSrc++;  
+    return dest;
 }
-inline void memset(void *dest,uint8_t val,uint32_t len) {
-    uint8_t *dst = (uint8_t *)dest;
-    for (;len != 0;len--)
-        *dst++ = val;
+void *memset(void *src,int chunk,size_t count) {
+	if (src == NULL || count < 0)
+		return NULL;
+	char *tempSrc = (char *)src;
+	while (count-- > 0)
+		*tempSrc++ = chunk;
+	return src;
 }
-inline void bzero(void *dest,uint32_t len) { memset(dest,0,len); }
-int strcmp(const char *str1, const char *str2) {
-	while ((*str1 || *str2) && (*str1 == *str2))
-		str1++,str2++;
-	if (*str1 < *str2)
-		return -1;
-	return *str1 > *str2;
+void bzero(void *src,unsigned len) {
+	register char *tempSrc = (char *)src;
+	while (len != 0) {
+		*tempSrc++ = 0;
+		len--;
+	}
 }
 char *strcpy(char *dest, const char *src) {
 	char *p = dest;
