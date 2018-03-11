@@ -1,7 +1,7 @@
 #include "bitmap.h"
 #include "string.h"
 void create_bitmap(bitmap_t *bit,uint32_t map_address,uint32_t size) {
-	bit -> address = (uint32_t)address;
+	bit -> address = (uint32_t)map_address;
 	bit -> size = size;
 	memset((void *)map_address,0,size / 8);
 }

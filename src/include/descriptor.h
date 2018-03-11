@@ -61,11 +61,6 @@ typedef struct pt_regs_t {
     uint32_t useresp;
     uint32_t ss;
 } pt_regs;
-// descriptor manager
-typedef struct descriptor_manager {
-	descriptor_t *desc;
-	int count;
-} __attribute__((packed)) descriptor_manager_t;
 // functions
 // global descriptor table
 void init_gdt();

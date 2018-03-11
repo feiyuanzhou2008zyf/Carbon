@@ -1,5 +1,4 @@
 #include "memorymanager.h"
-#include "descriptor.h"
 page_manager_t pg;
 memory_pool_t virtual_memory_pool;
 uint32_t physicalmemoryaddress;
@@ -8,7 +7,7 @@ void set_page_on_paging(uint32_t virtual_page_address,uint32_t physical_page_add
 	int pblindex,ptlindex;
 	pblindex = (virtual_page_address & 0xFFFFF000) / (4 * 1024 * 1024);
 	ptlindex = (virtual_page_address & 0x003FFFFF) / (4 * 1024);
-	uint32_t pbl_address,ptl_address;
+	uint32_t pbl_address;
 	memory_pool_t *ptr = &(pg.physical_memory_pool);
 	pbl_address = pg.pbl_address;
 	if (query_bitmap(&(pg.pbl_bitmap),pblindex) == 0) {
@@ -33,8 +32,7 @@ void set_page_on_paging(uint32_t virtual_page_address,uint32_t physical_page_add
 }
 void init_memory_manager(int physical_memory_size,void *kernel_address,int kernel_size) {
 	create_page_manager(&pg,0,0xFFFFF+0x20000,physical_memory_size,0x4FC000,0x4FD000,0x4FE000,0x4FF000,0x500000,0x501000,0);
-	CreatMemoryPool(&virtual_memory_pool,0x100000,0,1024*1024,VIRTUAL);
-	int i;
+	create_memory_pool(&virtual_memory_pool,0x100000,0,1024*1024,VIRTUAL);
 	set_memory_pool(&virtual_memory_pool,0,compute_page(0xFFFFF+0x20000),1);
 	set_memory_pool_one(&virtual_memory_pool,0x4FE000,1);
 	set_memory_pool_one(&virtual_memory_pool,0x4FF000,1);
@@ -79,7 +77,7 @@ void print_info() {
 }
 void release(uint32_t virtual_page_address) {
 	int pblindex,ptlindex;
-	pblindex =  (virtualpage_address & 0xFFFFF000) / (4 * 1024 * 1024);
+	pblindex =  (virtual_page_address & 0xFFFFF000) / (4 * 1024 * 1024);
 	ptlindex = (virtual_page_address & 0x003FFFFF) / (4 * 1024);
 	uint32_t *address_pbl =  (uint32_t *)pg.pbl_address;
 	uint32_t vitrual_address = query_virtual_address(address_pbl[pblindex] & 0xFFFFF000);
@@ -101,7 +99,7 @@ void release(uint32_t virtual_page_address) {
 		if ((test == 0)&& !query_bitmap(&pg.pbl_bitmap,i)) {
 			uint32_t *tmp = (uint32_t *)(pg.pbl_address);
 			if ((tmp[i] & 0xFFFFF000) != 0) {
-				release_page_one(tmp[i] & 0xFFFFF000);
+				release(tmp[i] & 0xFFFFF000);
 				set_bitmap(&pg.pbl_bitmap,i,0);
 				alloc_page_table(pg.pbl_address,i,0,0);
 			}
@@ -110,7 +108,7 @@ void release(uint32_t virtual_page_address) {
 }
 void release_page(uint32_t virtual_page_address,int32_t count) {
 	uint32_t tmp = virtual_page_address;
-	for(int i = 0;i < count;i++) { release_page_one(tmp + i * 4096); }
+	for(int i = 0;i < count;i++) { release(tmp + i * 4096); }
 }
 uint32_t query_virtual_address(uint32_t physical_page_address) {
 	if(physical_page_address==0) {
@@ -144,7 +142,6 @@ uint32_t query_physical_address(uint32_t virtual_page_address) {
 	ptlindex = (virtual_page_address & 0x003FFFFF) / (4 * 1024);
 	printk("pblindex: %d, ptlindex: %d  ",pblindex,ptlindex);
 	uint32_t pbl_address,ptl_address;
-	memory_pool_t *ptr = &(pg.physical_memory_pool);
 	pbl_address = pg.pbl_address;
 	printk("pbl address:  0x%08X\n",pbl_address);
 	if (query_bitmap(&(pg.pbl_bitmap),pblindex) == 0) {
@@ -152,7 +149,7 @@ uint32_t query_physical_address(uint32_t virtual_page_address) {
 		return 0;
 	}
 	else {
-		uint32_T *tmp =(uint32_T *)pbl_address;
+		uint32_t *tmp =(uint32_t *)pbl_address;
 		ptl_address = tmp[pblindex] & 0xFFFFF000;
 		printk("the pagetable address is: 0x%08X\n",ptl_address);
 		tmp = (uint32_t *)ptl_address;

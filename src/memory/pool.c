@@ -129,7 +129,7 @@ void set_memory_pool_one(memory_pool_t *pool,uint32_t index,uint8_t value) {
 		while(1) {}
 	}
 }
-void set_memory_pool(memory_pool_t *pool,uint32_t index,uint32_t count,uint8_t size) {
+void set_memory_pool(memory_pool_t *pool,uint32_t index,uint32_t count,uint8_t value) {
 	for (int i = 0;i < count;i++) { set_memory_pool_one(pool,(uint32_t)((int)index + i * 4 * 1024),value); }
 }
 void show_memory_pool_message(memory_pool_t *pool) {
