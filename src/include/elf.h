@@ -1,6 +1,6 @@
 #ifndef ELF_H
 #define ELF_H
-#include "types.h"
+#include "stddef.h"
 #include "multiboot.h"
 #define ELF32_ST_TYPE(i) ((i) & 0xf)
 typedef	struct elf_section_header_t {

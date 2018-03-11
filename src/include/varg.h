@@ -1,6 +1,6 @@
 #ifndef VARG_H
 #define VARG_H
-#include "types.h"
+#include "stddef.h"
 #define va_list char *
 #define va_start(p,first) (p = (va_list)&first + sizeof(first))
 #define va_arg(p,next) (*(next *)((p += sizeof(next)) - sizeof(next)))

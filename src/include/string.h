@@ -1,6 +1,6 @@
 #ifndef STRING_H
 #define STRING_H
-#include "types.h"
+#include "stddef.h"
 void *memcpy(void *dest, const void *src, size_t count);
 void *memset(void *src,int chunk,size_t count);
 void bzero(void *dest, unsigned len);

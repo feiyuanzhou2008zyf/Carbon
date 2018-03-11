@@ -1,6 +1,7 @@
-#ifndef IDT_H
-#define IDT_H
-#include "types.h"
+#ifndef DESCRIPTOR_H
+#define DESCRIPTOR_H
+#include "stddef.h"
+// constant value
 #define IRQ0 32
 #define IRQ1 33
 #define IRQ2 34
@@ -17,6 +18,20 @@
 #define IRQ13 45
 #define IRQ14 46
 #define IRQ15 47
+// GDT define zone
+typedef struct gdt_entry_t {
+	uint16_t limit_low;
+    uint16_t base_low;
+    uint8_t base_middle;
+    uint8_t access;
+    uint8_t granularity;
+    uint8_t base_high;
+} __attribute__((packed)) gdt_entry_t;
+typedef struct gdt_ptr_t {
+	uint16_t limit;
+	uint32_t base;
+} __attribute__((packed)) gdt_ptr_t;
+// IDT define zone
 typedef struct idt_entry_t {
 	uint16_t base_low;
 	uint16_t selector;
@@ -46,6 +61,16 @@ typedef struct pt_regs_t {
     uint32_t useresp;
     uint32_t ss;
 } pt_regs;
+// descriptor manager
+typedef struct descriptor_manager {
+	descriptor_t *desc;
+	int count;
+} __attribute__((packed)) descriptor_manager_t;
+// functions
+// global descriptor table
+void init_gdt();
+extern void flush_gdt(uint32_t);
+// interrupt descriptor table and interrupt handler
 void init_idt();
 typedef void (*interrupt_handler_t)(pt_regs *);
 void register_interrupt_handler(uint8_t n,interrupt_handler_t h);
@@ -99,4 +124,4 @@ void irq12();
 void irq13();
 void irq14();
 void irq15();
-#endif // IDT_H
+#endif // DESCRIPTOR_H

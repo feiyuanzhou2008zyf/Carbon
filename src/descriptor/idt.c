@@ -1,7 +1,7 @@
 #include "common.h"
 #include "string.h"
 #include "stdio.h"
-#include "idt.h"
+#include "descriptor.h"
 idt_entry_t idt_entry[256];
 idt_ptr_t idt_ptr;
 interrupt_handler_t interrupt_handlers[256];

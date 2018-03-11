@@ -1,7 +1,7 @@
 #include "common.h"
 #include "string.h"
 #include "elf.h"
-#include "virtual_memory.h"
+#include "page.h"
 elf_t elf_from_multiboot(multiboot_t *mb) {
     int i;
     elf_t elf;

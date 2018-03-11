@@ -1,4 +1,4 @@
-#include "gdt.h"
+#include "descriptor.h"
 #include "string.h"
 #define GDT_LENGTH 5
 gdt_entry_t gdt_entry[GDT_LENGTH];

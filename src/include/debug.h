@@ -1,6 +1,6 @@
 #ifndef DEBUG_H
 #define DEBUG_H
-#include "console.h"
+#include "stddef.h"
 #include "varg.h"
 #include "elf.h"
 #include "stdio.h"
