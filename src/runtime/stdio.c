@@ -15,7 +15,7 @@
 		int __res; \
 		asm("divl %4" : "=a" (n),"=d" (__res):"0"(n),"1"(0),"r"(base)); \
 		__res; })
-static uint16_t *video_memory = (uint16_t *)(0xB8000 + PAGE_OFFSET);
+static uint16_t *video_memory = (uint16_t *)(0xB8000);
 static uint8_t cursor_x = 0;
 static uint8_t cursor_y = 0;
 static int vsprintf(char *buff, const char *format, va_list args);

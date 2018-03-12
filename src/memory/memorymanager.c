@@ -30,18 +30,43 @@ void set_page_on_paging(uint32_t virtual_page_address,uint32_t physical_page_add
 		set_memory_pool_one(&virtual_memory_pool,virtual_page_address,1);
 	}
 }
-void init_memory_manager(int physical_memory_size,void *kernel_address,int kernel_size) {
-	create_page_manager(&pg,0,0xFFFFF+0x20000,physical_memory_size,0x4FC000,0x4FD000,0x4FE000,0x4FF000,0x500000,0x501000,0);
-	create_memory_pool(&virtual_memory_pool,0x100000,0,1024*1024,VIRTUAL);
-	set_memory_pool(&virtual_memory_pool,0,compute_page(0xFFFFF+0x20000),1);
-	set_memory_pool_one(&virtual_memory_pool,0x4FE000,1);
-	set_memory_pool_one(&virtual_memory_pool,0x4FF000,1);
-	set_memory_pool_one(&virtual_memory_pool,0x500000,1);
-	set_memory_pool_one(&virtual_memory_pool,0x501000,1);
-	set_memory_pool_one(&virtual_memory_pool,0x120000,1);
-	set_memory_pool_one(&virtual_memory_pool,0x121000,1);
-	set_memory_pool_one(&virtual_memory_pool,0x122000,1);
-	set_memory_pool_one(&virtual_memory_pool,0x123000,1);
+
+//初始化内存管理器
+//参数：1.内存图地址，2.内存图长度，3.内核使用空间，4。内核大小，
+void init_memory_manager(uint32_t mmap_addr,uint32_t mmap_length,uint32_t kernel_entry,uint32_t kernel_end) {
+	printk("init memory manager\n");
+	printk("kernel memory info:\n");
+	uint32_t memorysize=0;
+	//计算物理内存大小
+	for(int i=0;i<mmap_length/sizeof(mmap_entry_t);i++)
+	{
+		mmap_entry_t * tmp = (mmap_entry_t *)mmap_addr;
+		printk("0x%08X%08X - 0x%08X%08X  type:%d\n",
+		tmp[i].base_addr_high,
+		tmp[i].base_addr_low,
+		tmp[i].base_addr_high+tmp[i].length_high,
+		tmp[i].base_addr_low+tmp[i].length_low,
+		tmp[i].type
+		);
+		if(tmp[i].base_addr_low+tmp[i].length_low > memorysize)
+		{
+			memorysize = tmp[i].base_addr_low+tmp[i].length_low;
+		}
+		if(tmp[i].base_addr_high+tmp[i].length_high >0)
+		{
+			printk("we can use 64 address!");
+		}
+	}
+	printk("memory size is :0x%08X",memorysize);
+	//多加的0x200000是留给虚拟内存的图(内核使用内存从0x9F000:内核从0x100000开始到内核结束 0x20000代表虚拟内存的图)
+	create_page_manager(&pg,0x9F000,kernel_end+0x20000 -0x9F000 ,memorysize,0);
+	//open_page_mode(&pg);
+	//创建虚拟内存池
+	create_memory_pool(&virtual_memory_pool,kernel_end+0x20000,0,1024*1024,VIRTUAL);
+	set_memory_pool(&virtual_memory_pool,0x9F000,compute_page(0xFFFFF+kernel_end+0x20000- 0x9F000),1);
+	set_memory_pool(&virtual_memory_pool,0x0,2,1);
+	//show_memory_pool_message(&virtual_memory_pool);
+	show_memory_pool_message(&(pg.physical_memory_pool));
 }
 void *kmalloc(int size) {
 	uint32_t tmp = query_unuse_memory(&virtual_memory_pool,0,size);
@@ -61,7 +86,7 @@ void free(void *ptr,int size) {
 void *merge(int * sizesum,const void *ptr1,int size1,const void *ptr2,int size2) {
 	uint32_t tmp = query_unuse_memory(&virtual_memory_pool,0,size1 + size2);
 	uint32_t tmp_add = tmp;
-	uint32_t tmp_ptr;
+	uint32_t* tmp_ptr;
 	int i;
 	tmp_ptr = (uint32_t)ptr1;
 	for(i = 0;i < size1;i++) {}

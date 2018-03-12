@@ -9,11 +9,11 @@ void set_bitmap(bitmap_t *bit,uint32_t index,uint8_t value) {
 	uint32_t index_x,index_y;
 	index_x = index / 8;
 	index_y = index % 8;
-	uint8_t tmp;
+	uint8_t* tmp;
 	uint8_t tmp_value;
 	uint8_t tmp_test;
-	tmp = (uint8_t *)bit -> address;
-	tmp_value = tmp[index_x];
+	tmp = (uint8_t*)bit -> address;
+	tmp_value = (uint8_t)tmp[index_x];
 	if (value == 0) {
 		tmp_test = 1 << index_y;
 		tmp_test = tmp_test ^ 0xFF;

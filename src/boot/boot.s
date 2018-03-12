@@ -15,12 +15,12 @@ start:
 	cli
 	mov [global_multiboot_ptr_tmp],ebx
 	mov esp,STACK_TOP
-	and esp,0FFFFFFF0H
-	mov ebp,0
+	and esp,0xFFFFFFF0
+	mov ebp,esp
 	call kernel_entry
 [section .init.data]
 stack:
-	times 1024 db 0
+	times 4096 db 0
 STACK_TOP equ $ - stack - 1
 global_multiboot_ptr_tmp:
 	dd 0

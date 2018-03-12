@@ -28,7 +28,7 @@ void show_use_memory(memory_pool_t *pool) {
 		i--;
 		y = i;
 		end_address =(uint32_t)pool -> memory_begin_address + i * 4 * 1024 + 0xFFF;
-		printk("%d-%d:\t%dK-%dK\n0x%08X-0x%08X\n",x,y,x * 4,y * 4,begin_address,end_address);
+		printk("%d-%d:\t%dK-%dK\t0x%08X-0x%08X\n",x,y,x * 4,y * 4,begin_address,end_address);
 		i++;
 		i++;
 	}
@@ -57,7 +57,7 @@ void show_unuse_memory(memory_pool_t *pool) {
 		i--;
 		y = i;
 		end_address =(uint32_t)pool -> memory_begin_address + i * 4 * 1024 + 0xFFF;
-		printk("%d-%d: %dK-%dK\n0x%08X-0x%08X\n",x,y,x * 4,y * 4,begin_address,end_address);
+		printk("%d-%d: %dK-%dK\t0x%08X-0x%08X\n",x,y,x * 4,y * 4,begin_address,end_address);
 		i++;
 	}
 }
@@ -133,7 +133,8 @@ void set_memory_pool(memory_pool_t *pool,uint32_t index,uint32_t count,uint8_t v
 	for (int i = 0;i < count;i++) { set_memory_pool_one(pool,(uint32_t)((int)index + i * 4 * 1024),value); }
 }
 void show_memory_pool_message(memory_pool_t *pool) {
-	printk("MapAddress:0x%08X\nMapSize:0x%08X\nBeginAddress:0x%08X\n",pool -> bitmap.address,pool -> bitmap.size,pool -> memory_begin_address);
+	printk("\nMapAddress:0x%08X\tMapSize:0x%08X\tBeginAddress:0x%08X\n",pool -> bitmap.address,pool -> bitmap.size,pool -> memory_begin_address);
 	show_unuse_memory(pool);
+	printk("\n");
 	show_use_memory(pool);
 }
