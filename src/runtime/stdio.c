@@ -1,6 +1,5 @@
 #include "stdio.h"
 #include "varg.h"
-#include "page.h"
 #include "common.h"
 #include "string.h"
 #define is_digit(c) ((c) >= '0' && (c) <= '9')

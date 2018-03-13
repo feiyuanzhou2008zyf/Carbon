@@ -1,7 +1,7 @@
 #include "common.h"
 #include "string.h"
 #include "elf.h"
-#include "page.h"
+#define PAGE_OFFSET 0xC0000000
 elf_t elf_from_multiboot(multiboot_t *mb) {
     int i;
     elf_t elf;
