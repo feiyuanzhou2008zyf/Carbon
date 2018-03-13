@@ -7,6 +7,8 @@
 	#define TRUE 1
 	#define FALSE 0
 #endif // TRUE
+typedef unsigned long uint64_t;
+typedef long int64_t;
 typedef unsigned int uint32_t;
 typedef int int32_t;
 typedef unsigned short uint16_t;
