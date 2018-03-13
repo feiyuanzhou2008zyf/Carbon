@@ -16,12 +16,12 @@ uint64_t magic;
 extern multiboot_t *global_multiboot_ptr;
 extern multiboot_t *global_multiboot_ptr_tmp;
 extern void kernel_entry();
-multiboot_header_t mbr __attribute__((section(".text"))) = {
+multiboot_header_t mbr __attribute__((section(".init.text"))) = {
 	.magic = MULTIBOOT_MAGIC,
 	.flags = MULTIBOOT_HEADER_FLAGS,
 	.checksum = MULTIBOOT_CHECKSUM
 };
-__attribute__((section(".init.text"))) void start() {
+__attribute__((section(".text"))) void start() {
 	asm volatile ("movl %%eax,%0" : "=m"(magic));
 	if (magic != 0x2BADB002) {
 		while (1) {}
