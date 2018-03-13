@@ -1,4 +1,5 @@
 #include "common.h"
+#include "multiboot.h"
 #include "string.h"
 #include "elf.h"
 #define PAGE_OFFSET 0x100000

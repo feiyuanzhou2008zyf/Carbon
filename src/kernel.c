@@ -5,7 +5,7 @@ multiboot_t *global_multiboot_ptr_tmp;
 multiboot_t *global_multiboot_ptr;
 extern uint8_t kernel_start[];
 extern uint8_t kernel_end[];
-__attribute__((section(".init.text"))) void kernel_entry() {
+__attribute__((section(".text"))) void kernel_entry() {
 	global_multiboot_ptr = global_multiboot_ptr_tmp;
 	memory_size = global_multiboot_ptr -> mem_upper;
 	kernel_main();

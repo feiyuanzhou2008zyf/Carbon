@@ -10,4 +10,6 @@
 #include "timer.h"
 #include "stddef.h"
 #include "varg.h"
+void kernel_entry();
+void kernel_main();
 #endif // KERNEL_H

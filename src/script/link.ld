@@ -1,4 +1,4 @@
-ENTRY(start)
+ENTRY(boot_entry)
 SECTIONS {
 	PROVIDE( kernel_start = 0x100000 );
 	. = 0x100000;
