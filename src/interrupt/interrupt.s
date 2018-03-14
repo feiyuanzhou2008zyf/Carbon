@@ -1,110 +1,119 @@
-[bits 32]
-; if click exception,the cpu push the error code,do nothing
-%define ERROR_CODE nop
-; else push 0
-%define ZERO push 0
-; Exception handler function table
-extern idt_handler_table
-[section .data]
-; Interrupt entry function table
-global interrupt_entry_table
-interrupt_entry_table:
-; define a macro,register the handler function table
-%macro VECTOR 2
-interrupt_handler_%1_entry:
-	%2
-	push ds
-	push es
-	push fs
-	push gs
-	pushad
-	mov al,0x20
-	out 0xa0,al
-	out 0x20,al
-	push %1
-	call [idt_handler_table + %1 * 4]
-	jmp interrupt_handler_entry_end
-[section .data]
-	dd interrupt_handler_%1_entry
+%macro DECLARE_INTERRUPT %1
+global asm_inthandle%1
 %endmacro
-; recover context
-[section .text]
-global interrupt_handler_entry_end
-interrupt_handler_entry_end:
-	add esp,4
-	popad
-	pop gs
-	pop fs
-	pop es
-	pop ds
-	add esp,4
-	iretd
-; interrupt vector
-VECTOR 0x00,ZERO
-VECTOR 0x01,ZERO
-VECTOR 0x02,ZERO
-VECTOR 0x03,ZERO 
-VECTOR 0x04,ZERO
-VECTOR 0x05,ZERO
-VECTOR 0x06,ZERO
-VECTOR 0x07,ZERO 
-VECTOR 0x08,ERROR_CODE
-VECTOR 0x09,ZERO
-VECTOR 0x0a,ERROR_CODE
-VECTOR 0x0b,ERROR_CODE 
-VECTOR 0x0c,ZERO
-VECTOR 0x0d,ERROR_CODE
-VECTOR 0x0e,ERROR_CODE
-VECTOR 0x0f,ZERO 
-VECTOR 0x10,ZERO
-VECTOR 0x11,ERROR_CODE
-VECTOR 0x12,ZERO
-VECTOR 0x13,ZERO 
-VECTOR 0x14,ZERO
-VECTOR 0x15,ZERO
-VECTOR 0x16,ZERO
-VECTOR 0x17,ZERO 
-VECTOR 0x18,ERROR_CODE
-VECTOR 0x19,ZERO
-VECTOR 0x1a,ERROR_CODE
-VECTOR 0x1b,ERROR_CODE 
-VECTOR 0x1c,ZERO
-VECTOR 0x1d,ERROR_CODE
-VECTOR 0x1e,ERROR_CODE
-VECTOR 0x1f,ZERO 
-VECTOR 0x20,ZERO ; Timer
-VECTOR 0x21,ZERO ; Keyboard
-VECTOR 0x22,ZERO ; cascade
-VECTOR 0x23,ZERO ; serial 2 entry
-VECTOR 0x24,ZERO ; serial 1 entry
-VECTOR 0x25,ZERO ; parallel 2 entry
-VECTOR 0x26,ZERO ; floppy entry
-VECTOR 0x27,ZERO ; parallel 1 entry
-VECTOR 0x28,ZERO ; 
-VECTOR 0x29,ZERO ; redirect
-VECTOR 0x2a,ZERO ; keep
-VECTOR 0x2b,ZERO ; keep
-VECTOR 0x2c,ZERO ; PS/2 mouse
-VECTOR 0x2d,ZERO ; FPU exception
-VECTOR 0x2e,ZERO ; Hard disk
-VECTOR 0x2f,ZERO ; keep
-; 0x80 Exception,for system call using
-[bits 32]
-extern syscall_table
-[section .text]
-global syscall_handler
-syscall_handler:
-	push 0
-	push ds
+%macro INTERRUPT_VECTOR %1
+asm_inthandle%1:
 	push es
-	push fs
-	push gs
+	push ds
 	pushad
-	push 0x80
-	push edx
-	push ecx
-	push ebx
-	call [syscall_table + eax * 4]
-	add esp,12
-	mov [esp + 8 * 4],eax
-	jmp interrupt_handler_entry_end
+	mov eax,esp
+	push eax
+	mov ax,ss
+	mov ds,ax
+	mov es,ax
+	call inthandler_other
+	pop eax
+	popad
+	pop ds
+	pop es
+	iret
+%endmacro
+DECLARE_INTERRUPT 0
+DECLARE_INTERRUPT 1
+DECLARE_INTERRUPT 2
+DECLARE_INTERRUPT 3
+DECLARE_INTERRUPT 4
+DECLARE_INTERRUPT 5
+DECLARE_INTERRUPT 6
+DECLARE_INTERRUPT 7
+DECLARE_INTERRUPT 8
+DECLARE_INTERRUPT 9
+DECLARE_INTERRUPT 10
+DECLARE_INTERRUPT 11
+DECLARE_INTERRUPT 12
+DECLARE_INTERRUPT 13
+DECLARE_INTERRUPT 14
+DECLARE_INTERRUPT 15
+DECLARE_INTERRUPT 16
+DECLARE_INTERRUPT 17
+DECLARE_INTERRUPT 18
+DECLARE_INTERRUPT 19
+DECLARE_INTERRUPT 20
+DECLARE_INTERRUPT 21
+DECLARE_INTERRUPT 22
+DECLARE_INTERRUPT 23
+DECLARE_INTERRUPT 24
+DECLARE_INTERRUPT 25
+DECLARE_INTERRUPT 26
+DECLARE_INTERRUPT 27
+DECLARE_INTERRUPT 28
+DECLARE_INTERRUPT 29
+DECLARE_INTERRUPT 30
+DECLARE_INTERRUPT 31
+DECLARE_INTERRUPT 32
+DECLARE_INTERRUPT 33
+extern inthandler20
+extern inthandler21
+extern inthandler_other
+INTERRUPT_VECTOR 0
+INTERRUPT_VECTOR 1
+INTERRUPT_VECTOR 2
+INTERRUPT_VECTOR 3
+INTERRUPT_VECTOR 4
+INTERRUPT_VECTOR 5
+INTERRUPT_VECTOR 6
+INTERRUPT_VECTOR 7
+INTERRUPT_VECTOR 8
+INTERRUPT_VECTOR 9
+INTERRUPT_VECTOR 10
+INTERRUPT_VECTOR 11
+INTERRUPT_VECTOR 12
+INTERRUPT_VECTOR 13
+INTERRUPT_VECTOR 14
+INTERRUPT_VECTOR 15
+INTERRUPT_VECTOR 16
+INTERRUPT_VECTOR 17
+INTERRUPT_VECTOR 18
+INTERRUPT_VECTOR 19
+INTERRUPT_VECTOR 20
+INTERRUPT_VECTOR 21
+INTERRUPT_VECTOR 22
+INTERRUPT_VECTOR 23
+INTERRUPT_VECTOR 24
+INTERRUPT_VECTOR 25
+INTERRUPT_VECTOR 26
+INTERRUPT_VECTOR 27
+INTERRUPT_VECTOR 28
+INTERRUPT_VECTOR 29
+INTERRUPT_VECTOR 30
+INTERRUPT_VECTOR 31
+asm_inthandle32:
+	push es
+	push ds
+	pushad
+	mov eax,esp
+	push eax
+	mov ax,ss
+	mov ds,ax
+	mov es,ax
+	call inthandler20
+	pop eax
+	popad
+	pop ds
+	pop es
+	iret
+asm_inthandle33:
+	push es
+	push ds
+	pushad
+	mov eax,esp
+	push eax
+	mov ax,ss
+	mov ds,ax
+	mov es,ax
+	call inthandler21
+	pop eax
+	popad
+	pop ds
+	pop es
+	iret

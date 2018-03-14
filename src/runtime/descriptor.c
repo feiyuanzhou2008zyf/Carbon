@@ -1,5 +1,5 @@
 #include "global.h"
-void set_segdesc(segment *s,uint32_t limit,int base,int ar) {
+void set_segdesc(Segment *s,uint32_t limit,int base,int ar) {
 	if (limit > 0xffffff) {
 		ar |= 0x8000;
 		limit /= 0x1000;
@@ -12,7 +12,7 @@ void set_segdesc(segment *s,uint32_t limit,int base,int ar) {
 	s -> base_high = (base >> 24) & 0xff;
 	return;
 }
-void set_gatedesc(gate *g,int offset,int selector,int ar) {
+void set_gatedesc(Gate *g,int offset,int selector,int ar) {
 	g -> offset_low = offset & 0xffff;
 	g -> selector = selector;
 	g -> count = (ar >> 8) & 0xff;

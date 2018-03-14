@@ -13,6 +13,7 @@ __attribute__((section(".text"))) void kernel_entry() {
 }
 void kernel_main() {
 	init_debug();
+	init_idt();
 	console_clear();
 	printk("Hello World,Here Kernel\n");
 	// uint32_t address = global_multiboot_ptr->mmap_addr;
