@@ -1,551 +1,110 @@
-global asm_inthandler0
-global asm_inthandler1
-global asm_inthandler2
-global asm_inthandler3
-global asm_inthandler4
-global asm_inthandler5
-global asm_inthandler6
-global asm_inthandler7
-global asm_inthandler8
-global asm_inthandler9
-global asm_inthandler10
-global asm_inthandler11
-global asm_inthandler12
-global asm_inthandler13
-global asm_inthandler14
-global asm_inthandler15
-global asm_inthandler16
-global asm_inthandler17
-global asm_inthandler18
-global asm_inthandler19
-global asm_inthandler20
-global asm_inthandler21
-global asm_inthandler22
-global asm_inthandler23
-global asm_inthandler24
-global asm_inthandler25
-global asm_inthandler26
-global asm_inthandler27
-global asm_inthandler28
-global asm_inthandler29
-global asm_inthandler30
-global asm_inthandler31
-global asm_inthandler32
-global asm_inthandler33
-extern inthandler20
-extern inthandler21
-extern inthandler_other
 [bits 32]
-; Normal interrupt
-asm_inthandler0:
-	push es
+; if click exception,the cpu push the error code,do nothing
+%define ERROR_CODE nop
+; else push 0
+%define ZERO push 0
+; Exception handler function table
+extern idt_handler_table
+[section .data]
+; Interrupt entry function table
+global interrupt_entry_table
+interrupt_entry_table:
+; define a macro,register the handler function table
+%macro VECTOR 2
+interrupt_handler_%1_entry:
+	%2
 	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler1:
 	push es
-	push ds
+	push fs
+	push gs
 	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
+	mov al,0x20
+	out 0xa0,al
+	out 0x20,al
+	push %1
+	call [idt_handler_table + %1 * 4]
+	jmp interrupt_handler_entry_end
+[section .data]
+	dd interrupt_handler_%1_entry
+%endmacro
+; recover context
+[section .text]
+global interrupt_handler_entry_end
+interrupt_handler_entry_end:
+	add esp,4
 	popad
-	pop ds
+	pop gs
+	pop fs
 	pop es
-	iret
-asm_inthandler2:
+	pop ds
+	add esp,4
+	iretd
+; interrupt vector
+VECTOR 0x00,ZERO
+VECTOR 0x01,ZERO
+VECTOR 0x02,ZERO
+VECTOR 0x03,ZERO 
+VECTOR 0x04,ZERO
+VECTOR 0x05,ZERO
+VECTOR 0x06,ZERO
+VECTOR 0x07,ZERO 
+VECTOR 0x08,ERROR_CODE
+VECTOR 0x09,ZERO
+VECTOR 0x0a,ERROR_CODE
+VECTOR 0x0b,ERROR_CODE 
+VECTOR 0x0c,ZERO
+VECTOR 0x0d,ERROR_CODE
+VECTOR 0x0e,ERROR_CODE
+VECTOR 0x0f,ZERO 
+VECTOR 0x10,ZERO
+VECTOR 0x11,ERROR_CODE
+VECTOR 0x12,ZERO
+VECTOR 0x13,ZERO 
+VECTOR 0x14,ZERO
+VECTOR 0x15,ZERO
+VECTOR 0x16,ZERO
+VECTOR 0x17,ZERO 
+VECTOR 0x18,ERROR_CODE
+VECTOR 0x19,ZERO
+VECTOR 0x1a,ERROR_CODE
+VECTOR 0x1b,ERROR_CODE 
+VECTOR 0x1c,ZERO
+VECTOR 0x1d,ERROR_CODE
+VECTOR 0x1e,ERROR_CODE
+VECTOR 0x1f,ZERO 
+VECTOR 0x20,ZERO ; Timer
+VECTOR 0x21,ZERO ; Keyboard
+VECTOR 0x22,ZERO ; cascade
+VECTOR 0x23,ZERO ; serial 2 entry
+VECTOR 0x24,ZERO ; serial 1 entry
+VECTOR 0x25,ZERO ; parallel 2 entry
+VECTOR 0x26,ZERO ; floppy entry
+VECTOR 0x27,ZERO ; parallel 1 entry
+VECTOR 0x28,ZERO ; 
+VECTOR 0x29,ZERO ; redirect
+VECTOR 0x2a,ZERO ; keep
+VECTOR 0x2b,ZERO ; keep
+VECTOR 0x2c,ZERO ; PS/2 mouse
+VECTOR 0x2d,ZERO ; FPU exception
+VECTOR 0x2e,ZERO ; Hard disk
+VECTOR 0x2f,ZERO ; keep
+; 0x80 Exception,for system call using
+[bits 32]
+extern syscall_table
+[section .text]
+global syscall_handler
+syscall_handler:
+	push 0
+	push ds
 	push es
-	push ds
+	push fs
+	push gs
 	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler3:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler4:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler5:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler6:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler7:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler8:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler9:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler10:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler11:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler12:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler13:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler14:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler15:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler16:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler17:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler18:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler19:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler20:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler21:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler22:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler23:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler24:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler25:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler26:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler27:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler28:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler29:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler30:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-asm_inthandler31:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler_other
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-; Timer interrupt
-asm_inthandler32:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler20
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
-; Keyboard interrupt
-asm_inthandlr33:
-	push es
-	push ds
-	pushad
-	mov eax,esp
-	push eax
-	mov ax,ss
-	mov ds,ax
-	mov es,ax
-	call inthandler21
-	pop eax
-	popad
-	pop ds
-	pop es
-	iret
+	push 0x80
+	push edx
+	push ecx
+	push ebx
+	call [syscall_table + eax * 4]
+	add esp,12
+	mov [esp + 8 * 4],eax
+	jmp interrupt_handler_entry_end
