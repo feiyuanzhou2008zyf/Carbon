@@ -1,105 +1,69 @@
-; Constant value
-CODE_SELECTOR equ 0x8
-DATA_SECECTOR equ 0x10
-; Using 4 bit align
-align 4
-; Global function and extern pointer
-global flush_gdt
-global load_idt
-extern gdt_pointer
-extern idt_pointer
-; void flush_gdt(uint32_t)
-flush_gdt:
-	lgdt [gdt_pointer]
-	mov ax,DATA_SECECTOR
-	mov ds,ax
-	mov es,ax
-	mov fs,ax
-	mov gs,ax
-	mov ss,ax
-	jmp CODE_SELECTOR:flush
-; Subroutine for flush_gdt
-flush:
-	ret
-; Load interrupt pointer
-load_idt:
-	lidt [idt_pointer]
-	ret
-; Interrupt service routines
-; Exception 0 to 31 definition
-%macro interrupt_fault 1
-; Declare interrupt handler,call from C code
-global interrupt_handler%1
-interrupt_handler%1:
-	cli
-	%if %1 != 17 && %1 != 30 && (%1 < 8 || %1 > 14)
-		push 0
-	%endif
-	push %1
-	jmp _isr_stub
-%endmacro
-; Declare function
-%assign i 0
-%rep 32
-	interrupt_fault i
-	%assign i i + 1
-%endrep
-; Interrupt request: 32 to 47
-%macro interrupt_request 1
-; Declare interrupt request,call from C code
-global interrupt_requests%1
-interrupt_requests%1:
-	cli
-	push 0
-	push %1 + 32
-	jmp _isr_stub
-%endmacro
-; Declare request
-%assign i 0
-%rep 16
-	interrupt_request i
-	%assign i i + 1
-%endrep
-; System call
-; Declare function
-global sys_call
-sys_call:
-	push 0
-	push 0x80
-	jmp _isr_stub
-; if interrupt is unknown
-global isr_unknown
-isr_unknown:
-	cli
-	push 0
-	push 255
-	jmp _isr_stub
-; Interrupt handler function
-global isr_stub_ret
-extern isr_stub
-_isr_stub:
-	pusha
-    push ds
-    push es
-    push fs
-    push gs
-    mov ax,DATA_SECECTOR
-    mov ds,ax
-    mov es,ax
-    mov fs,ax
-    mov gs,ax
-    mov ss,ax
-    mov eax,esp
-    push eax
-    mov eax,isr_stub
-    call eax
-    pop eax
-; Recover context
-_isr_stub_ret:
+[bits 32]
+%define ERROR_CODE nop
+%define ZERO push 0
+extern idt_table
+[section .data]
+global int_entry_table
+int_entry_table:
+	%macro VECTOR 2
+		[section .text]
+		int%1_entry:
+			%2
+			push ds
+			push es
+			push fs
+			push gs
+			pushad
+			mov al,0x20
+			out 0xa0,al
+			out 0x20,al
+			push %1
+			call [idt_table + %1 * 4]
+			jmp int_exit
+		[section .data]
+		dd int%1_entry
+	%endmacro
+[section .text]
+global int_exit
+int_exit:
+	add esp,4
+	popad
 	pop gs
-    pop fs
-    pop es
-    pop ds
-    popa
-    add esp,8
-    iret
+	pop fs
+	pop es
+	pop ds
+	add esp,4
+	iretd
+VECTOR 0x00,ZERO  
+VECTOR 0x01,ZERO  
+VECTOR 0x02,ZERO  
+VECTOR 0x03,ZERO   
+VECTOR 0x04,ZERO  
+VECTOR 0x05,ZERO  
+VECTOR 0x06,ZERO  
+VECTOR 0x07,ZERO   
+VECTOR 0x08,ERROR_CODE  
+VECTOR 0x09,ZERO  
+VECTOR 0x0a,ERROR_CODE  
+VECTOR 0x0b,ERROR_CODE   
+VECTOR 0x0c,ZERO  
+VECTOR 0x0d,ERROR_CODE  
+VECTOR 0x0e,ERROR_CODE  
+VECTOR 0x0f,ZERO   
+VECTOR 0x10,ZERO  
+VECTOR 0x11,ERROR_CODE  
+VECTOR 0x12,ZERO  
+VECTOR 0x13,ZERO   
+VECTOR 0x14,ZERO  
+VECTOR 0x15,ZERO  
+VECTOR 0x16,ZERO  
+VECTOR 0x17,ZERO   
+VECTOR 0x18,ERROR_CODE  
+VECTOR 0x19,ZERO  
+VECTOR 0x1a,ERROR_CODE  
+VECTOR 0x1b,ERROR_CODE   
+VECTOR 0x1c,ZERO  
+VECTOR 0x1d,ERROR_CODE  
+VECTOR 0x1e,ERROR_CODE  
+VECTOR 0x1f,ZERO   
+VECTOR 0x20,ZERO
