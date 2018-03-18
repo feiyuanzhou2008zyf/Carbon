@@ -8,6 +8,7 @@
 #include "stdio.h"
 #include "string.h"
 #include "varg.h"
+#include "init8259a.h"
 void kernel_entry();
 void kernel_main();
 #endif // KERNEL_H

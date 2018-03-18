@@ -3,4 +3,5 @@ file kernel.elf
 break boot_entry
 break kernel_entry
 break kernel_main
+break init_pic
 c
