@@ -36,5 +36,4 @@ typedef struct gdt_ptr gdt_ptr_t;
 typedef uint64_t gdt_entry_t;
 void init_gdt();
 void flush_gdt(gdt_entry_t ptr);
-gdt_entry_t create_gdt(uint32_t base,uint32_t limit,uint16_t flag);
 #endif // GLOBAL_H

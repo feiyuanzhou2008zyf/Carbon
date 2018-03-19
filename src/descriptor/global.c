@@ -16,10 +16,11 @@ static gdt_entry_t create_gdt(uint32_t base, uint32_t limit, uint16_t flag) {
 void init_gdt() {
 	gdt_pointer.limit = (sizeof(gdt_entry_t) * 5) - 1;
 	gdt_pointer.base = (uint32_t)entrys;
-	entrys[0] = create_entry(0, 0, 0);
-	entrys[1] = create_entry(0, 0x000FFFFF, (GDT_CODE_PL0));
-	entrys[2] = create_entry(0, 0x000FFFFF, (GDT_DATA_PL0));entrys[3] = create_entry(0, 0x000FFFFF, (GDT_CODE_PL3));
-	entrys[4] = create_entry(0, 0x000FFFFF, (GDT_DATA_PL3));
+	entrys[0] = create_gdt(0, 0, 0);
+	entrys[1] = create_gdt(0, 0x000FFFFF, (GDT_CODE_PL0));
+	entrys[2] = create_gdt(0, 0x000FFFFF, (GDT_DATA_PL0));
+	entrys[3] = create_gdt(0, 0x000FFFFF, (GDT_CODE_PL3));
+	entrys[4] = create_gdt(0, 0x000FFFFF, (GDT_DATA_PL3));
 	flush_gdt((uint32_t)&gdt_pointer);
 }
 void flush_gdt(gdt_entry_t ptr) {

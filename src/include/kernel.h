@@ -9,6 +9,7 @@
 #include "string.h"
 #include "varg.h"
 #include "init8259a.h"
+#include "global.h"
 void kernel_entry();
 void kernel_main();
 #endif // KERNEL_H

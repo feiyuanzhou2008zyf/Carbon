@@ -12,6 +12,7 @@ __attribute__((section(".text"))) void kernel_entry() {
 	asm volatile ("hlt");
 }
 void kernel_main() {
+	init_gdt();
 	init_pic();
 	init_debug();
 	console_clear();
