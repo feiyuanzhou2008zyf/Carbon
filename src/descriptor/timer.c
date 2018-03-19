@@ -8,7 +8,7 @@ static void timer_callback(registers_t regs) {
 	printk("Tick: %d\n",tick);
 }
 void init_timer(uint32_t frequency) {
-	register_interrupt_handler(IRQ0, &timer_callback);
+	request_interrupt_handler(IRQ0, &timer_callback);
 	uint32_t divisor = 1193180 / frequency;
 	outb(0x43, 0x36);
 	uint8_t l = (uint8_t)(divisor & 0xFF);

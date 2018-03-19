@@ -4,4 +4,5 @@ break boot_entry
 break kernel_entry
 break kernel_main
 break init_pic
+break init_descriptor_table
 c

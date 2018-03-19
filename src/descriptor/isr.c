@@ -3,7 +3,7 @@
 #include "isr.h"
 #include "stdio.h"
 isr_t interrupt_handlers[256];
-void registers_interrupt_handler(uint8_t n,isr_t handler) {
+void request_interrupt_handler(uint8_t n,isr_t handler) {
 	interrupt_handlers[n] = handler;
 }
 void isr_handler(registers_t regs) {
