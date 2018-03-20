@@ -15,8 +15,8 @@ extern isr_t interrupt_handlers[];
 void init_descriptor_table() {
 	init_gdt();
 	init_idt();
-	init_timer(50);
 	memset(&interrupt_handlers,0,sizeof(isr_t) * 256);
+	init_timer(1000);
 }
 static void init_gdt() {
 	gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
