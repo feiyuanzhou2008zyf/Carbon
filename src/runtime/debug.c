@@ -22,7 +22,7 @@ void print_cur_status() {
 void panic(const char *msg) {
     printk("*** System panic: %s\n", msg);
     print_stack_trace();
-    printk("***\n");
+    printk("*** System panic end ***\n");
     while(1);
 }
 void print_stack_trace() {
@@ -36,5 +36,6 @@ void print_stack_trace() {
 }
 void _assert(void *exp,void *file,uint32_t line) {
     printk("Assertion failed: %s,File: %s,Line: %d",exp,file,line);
+	print_stack_trace();
     asm volatile ("hlt");
 }

@@ -13,8 +13,8 @@ __attribute__((section(".text"))) void kernel_entry() {
 }
 void kernel_main() {
 	init_debug();
-	init_pic();
 	init_descriptor_table();
+	init_pic();
 	console_clear();
 	printk("Hello World,Here Kernel\n");
 	// uint32_t address = global_multiboot_ptr->mmap_addr;
@@ -22,7 +22,5 @@ void kernel_main() {
 	printk("kernel in memory start: 0x%08X\n", kernel_start);
    	printk("kernel in memory end: 0x%08X\n", kernel_end);
    	printk("kernel in memory used: %d KB\n\n", (kernel_end - kernel_start) / 1024);
-	asm volatile ("int $0x2");
-	asm volatile ("int $0x3");
-	asm volatile ("int $0x1A");
+	print_cur_status();
 }
