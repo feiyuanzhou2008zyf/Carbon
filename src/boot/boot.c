@@ -1,6 +1,5 @@
+#include "boot.h"
 #include "stddef.h"
-#include "multiboot.h"
-#include "kernel.h"
 #include "stdio.h"
 typedef struct multiboot_header {
 	uint64_t magic;
@@ -21,9 +20,9 @@ __attribute__((section(".text"))) void boot_entry(void) {
 		return;
 	}
 	asm volatile ("movl %%ebx,%0" : "=m"(multiboot_ptr));
-	console_clear();
+	clear();
 	asm volatile ("cli");
 	printk("Booting...");
 	kernel_entry();
-	while (1){}
+	while (1) {}
 }
