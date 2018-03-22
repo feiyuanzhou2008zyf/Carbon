@@ -1,11 +1,20 @@
 # Carbon
-A operate system using homemade Unix/Linux like kernel
+A operating system using homemade Unix/Linux like kernel
 ## Build
-Using make command to build release and debug kernel<br>
-release build:<br>
-make<br>
-debug build:<br>
-make debug<br>
-clean:<br>
+```
+// build image
+make
+// clean build directory
 make clean
-# Modified at 2018/2/14 22:20
+// using gdb debug
+make debug
+// using bochs
+make bochsdbg
+// gdb
+make bochsgdb
+// if you want mount/umount image
+make mount_image/umount_image
+// if you want delete mount point
+make delete_mountpoint
+```
+# Modified at 2018/3/22 20:46
