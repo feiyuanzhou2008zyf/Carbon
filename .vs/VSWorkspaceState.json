@@ -2,9 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\descriptor",
     "\\src\\include"
   ],
-  "SelectedNode": "\\src\\descriptor\\global.c",
+  "SelectedNode": "\\src\\kernel.c",
   "PreviewInSolutionExplorer": false
 }

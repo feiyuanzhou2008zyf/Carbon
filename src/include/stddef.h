@@ -1,11 +1,11 @@
 #ifndef STDDEF_H
 #define STDDEF_H
 #ifndef NULL
-	#define NULL 0
+#define NULL 0
 #endif // NULL
 #ifndef TRUE
-	#define TRUE 1
-	#define FLASE 0
+#define TRUE 1
+#define FLASE 0
 #endif // TRUE
 typedef unsigned long uint64_t;
 typedef long int64_t;
