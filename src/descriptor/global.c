@@ -6,7 +6,7 @@ gdt_entry_t gdt_entries[GDT_LENGTH];
 gdt_ptr_t gdt_ptr;
 extern uint32_t stack;
 static void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran);
-inline void flush_gdt(uint32_t ptr) { asm volatile ("lgdt %%eax" :: "a"(&ptr)); }
+inline void flush_gdt(uint32_t ptr) { asm volatile ("lgdt %%eax" :: "a"(ptr)); }
 void init_gdt() {
 	gdt_ptr.limit = sizeof(gdt_entry_t) * GDT_LENGTH - 1;
 	gdt_ptr.base = (uint32_t)&gdt_entries;
@@ -15,7 +15,7 @@ void init_gdt() {
 	gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
 	gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
 	gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
-	gdt_flush((uint32_t)&gdt_ptr);
+	flush_gdt((uint32_t)&gdt_ptr);
 }
 static void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
 	gdt_entries[num].base_low = (base & 0xFFFF);
