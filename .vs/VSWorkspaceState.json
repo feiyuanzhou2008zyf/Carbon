@@ -6,6 +6,6 @@
     "\\src\\include",
     "\\src\\libasm"
   ],
-  "SelectedNode": "\\src\\kernel.c",
+  "SelectedNode": "\\src\\descriptor",
   "PreviewInSolutionExplorer": false
 }

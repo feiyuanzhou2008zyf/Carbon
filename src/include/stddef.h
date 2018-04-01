@@ -3,10 +3,6 @@
 #ifndef NULL
 #define NULL 0
 #endif // NULL
-#ifndef TRUE
-#define TRUE 1
-#define FLASE 0
-#endif // TRUE
 typedef unsigned long uint64_t;
 typedef long int64_t;
 typedef unsigned int uint32_t;
