@@ -21,7 +21,7 @@ __attribute__((section(".text"))) void kernel_entry() {
 }
 void kernel_main() {
 	init_debug();
-	init_gdt();
+	// init_gdt();
 	clear();
 	printk("Hello World,Here Kernel\n");
 	printk("kernel in memory start: 0x%08X\n", kernel_start);

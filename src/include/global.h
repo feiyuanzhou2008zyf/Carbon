@@ -17,7 +17,6 @@ typedef struct gdt_ptr_t {
 } __attribute__((packed)) gdt_ptr_t;
 void init_gdt();
 extern void flush_gdt(uint32_t);
-*/
 enum RPL {
 	SYSTEM = 0,
 	USER = 3
@@ -60,4 +59,6 @@ typedef struct segment_descriptor global_descriptor;
 typedef struct segment_descriptor local_descriptor;
 void set_gdt_gate(uint8_t index,global_descriptor desc);
 int init_gdt();
+*/
+extern void flush_gdt(uint32_t);
 #endif // GLOBAL_H
