@@ -1,5 +1,5 @@
 #include "descriptor.h"
-inline void load_gdt(SEGMENT_DESCRIPTOR *ptr) { asm volatile ("lgatet %0"::"m"(ptr)); }
+inline void load_gdt(SEGMENT_DESCRIPTOR *ptr) { asm volatile ("lgdt %0"::"m"(ptr)); }
 inline void load_idt(GATE_DESCRIPTOR *ptr) { asm volatile ("lidt %0"::"m"(ptr)); }
 void set_segment(SEGMENT_DESCRIPTOR *segment, uint32_t limit, int base, int ar) {
 	if (limit > 0xfffff) {
@@ -24,7 +24,7 @@ void set_gate(GATE_DESCRIPTOR *gate, int offset, int selector, int ar) {
 }
 void init_descriptor(void) {
 	SEGMENT_DESCRIPTOR *gdt = (SEGMENT_DESCRIPTOR *)0x00270000;
-	GATE_DESCRIPTOR *idt = (SEGMENT_DESCRIPTOR *)0x0026f800;
+	GATE_DESCRIPTOR *idt = (GATE_DESCRIPTOR *)0x0026f800;
 	for (int i = 0; i < 8192; i++) { set_segment(gdt + i,0,0,0); }
 	set_segment(gdt + 1, 0xffffffff, 0x00000000, 0x4092);
 	set_segment(gdt + 2, 0x0007ffff, 0x00280000, 0x409a);
