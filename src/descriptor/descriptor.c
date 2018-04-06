@@ -23,13 +23,13 @@ void set_gate(GATE_DESCRIPTOR *gate, int offset, int selector, int ar) {
 	return;
 }
 void init_descriptor(void) {
-	SEGMENT_DESCRIPTOR *gdt = (SEGMENT_DESCRIPTOR *)0x00270000;
-	GATE_DESCRIPTOR *idt = (GATE_DESCRIPTOR *)0x0026f800;
-	for (int i = 0; i < 8192; i++) { set_segment(gdt + i,0,0,0); }
-	set_segment(gdt + 1, 0xffffffff, 0x00000000, 0x4092);
-	set_segment(gdt + 2, 0x0007ffff, 0x00280000, 0x409a);
+	SEGMENT_DESCRIPTOR *gdt = (SEGMENT_DESCRIPTOR *)ADDR_GDT;
+	GATE_DESCRIPTOR *idt = (GATE_DESCRIPTOR *)ADDR_IDT;
+	for (int i = 0; i <= LIMIT_GDT / 8; i++) { set_segment(gdt + i,0,0,0); }
+	set_segment(gdt + 1, 0xffffffff, 0x00000000, AR_DATA32_RW);
+	set_segment(gdt + 2, LIMIT_SEGMENT, ADDR_SEGMENT, AR_CODE32_ER);
 	load_gdt(gdt);
-	for (int i = 0; i < 256; i++) { set_gate(idt + i, 0, 0, 0); }
+	for (int i = 0; i <= LIMIT_IDT / 8; i++) { set_gate(idt + i, 0, 0, 0); }
 	load_idt(idt);
 	return;
 }
