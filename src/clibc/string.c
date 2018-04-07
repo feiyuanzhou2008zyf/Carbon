@@ -1,5 +1,5 @@
 #include "string.h"
-#include "debug.h"
+#include "assert.h"
 void *memcpy(void *dest, const void *src, size_t count) {
 	if (dest == NULL || src == NULL || count < 0)
 		return NULL;

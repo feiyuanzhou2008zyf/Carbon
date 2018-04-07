@@ -1,6 +1,6 @@
-#include "bit.h"
+#include "asm.h"
+#include "assert.h"
 #include "boot.h"
-#include "debug.h"
 #include "descriptor.h"
 #include "stdarg.h"
 #include "stddef.h"

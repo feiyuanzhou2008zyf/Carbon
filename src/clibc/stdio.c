@@ -2,7 +2,7 @@
 #include "stddef.h"
 #include "stdarg.h"
 #include "string.h"
-#include "bit.h"
+#include "asm.h"
 #define is_digit(c) ((c) >= '0' && (c) <= '9')
 #define ZEROPAD	1
 #define SIGN 2
