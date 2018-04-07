@@ -13,7 +13,7 @@ MultibootHeader mbr __attribute__((section(".init.text"))) = {
 };
 uint64_t magic;
 multiboot_t *multiboot_ptr;
-__attribute__((section(".init.text"))) void boot_entry(void) {
+__attribute__((section(".text"))) void boot_entry(void) {
 	asm volatile ("movl %%eax,%0" : "=m"(magic));
 	if (magic != 0x2BADB002) {
 		printk("Error: Cannot loading kernel\n");
