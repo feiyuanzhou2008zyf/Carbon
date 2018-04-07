@@ -5,7 +5,7 @@ S_OBJECT=$(patsubst %.s,%.o,$(S_SOURCE))
 CC=gcc
 LD=ld
 ASM=nasm
-CFLAGS=-c -Wall -m32 -ggdb -gstabs+ -nostdinc -fno-builtin -fno-stack-protector -Iinclude
+CFLAGS=-c -Wall -m32 -ggdb -gstabs+ -std=gnu11 -nostdinc -fno-builtin -fno-stack-protector -Iinclude
 LDFLAGS=-T script/link.ld -m elf_i386 -nostdlib
 ASMFLAGS=-f elf -g -F stabs
 all: $(S_OBJECT) $(C_OBJECT) link update
