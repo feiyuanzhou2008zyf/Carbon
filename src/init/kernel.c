@@ -2,6 +2,7 @@
 #include "assert.h"
 #include "boot.h"
 #include "descriptor.h"
+#include "interrupt.h"
 #include "pic.h"
 #include "stdarg.h"
 #include "stddef.h"
@@ -22,8 +23,6 @@ __attribute__((section(".text"))) void kernel_entry() {
 }
 void kernel_main() {
 	init_debug();
-	init_descriptor();
-	init_pic();
 	asm volatile ("sti");
 	clear();
 	printk("Hello World,Here Kernel\n");
