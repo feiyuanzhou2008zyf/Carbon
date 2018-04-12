@@ -1,8 +1,6 @@
 #include "boot.h"
 #include "stddef.h"
 #include "stdio.h"
-#include "pic.h"
-#include "descriptor.h"
 typedef struct multiboot_header {
 	uint64_t magic;
 	uint64_t flags;
@@ -25,8 +23,6 @@ __attribute__((section(".text"))) void boot_entry(void) {
 	clear();
 	asm volatile ("cli");
 	printk("Booting...");
-	init_descriptor();
-	init_pic();
 	kernel_entry();
 	while (1) {}
 }
